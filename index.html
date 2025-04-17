@@ -125,7 +125,11 @@
       }
 
       const summary = cart.map(p => `${p.title} (${p.size}, ${p.color}) — ${p.price}₽`).join("\n");
-      alert(`Ваш заказ:\n${summary}\n\nОплата по ссылке: https://pay.example.com\nИли отсканируйте QR-код.`);
+      const phone = "+447907340061";
+      const message = encodeURIComponent(`Здравствуйте! Я хочу заказать:\n${summary}`);
+      const waLink = `https://wa.me/${phone.replace('+', '')}?text=${message}`;
+
+      window.open(waLink, '_blank');
     }
 
     renderProducts();
