@@ -44,7 +44,7 @@
 
     function renderProducts() {
       const container = document.getElementById("products");
-      products.forEach(product => {
+      products.forEach((product, productIndex) => {
         const card = document.createElement("div");
         card.className = "col-sm-6 col-md-4 col-lg-3";
         card.innerHTML = `
@@ -53,23 +53,24 @@
             <div class="card-body">
               <h5 class="card-title">${product.title}</h5>
               <p>Цена: ${product.price}₽</p>
-              <select class="form-select mb-2 size-select">
+              <select class="form-select mb-2 size-select" data-index="${productIndex}">
                 <option disabled selected>Выбери размер</option>
                 <option>S</option><option>L</option><option>XL</option><option>XXL</option>
               </select>
-              <select class="form-select mb-2 color-select">
+              <select class="form-select mb-2 color-select" data-index="${productIndex}">
                 <option disabled selected>Выбери цвет</option>
                 <option>Чёрный</option><option>Белый</option>
               </select>
-              <button class="btn btn-primary w-100 add-to-cart">В корзину</button>
+              <button class="btn btn-primary w-100 add-to-cart" data-index="${productIndex}">В корзину</button>
             </div>
           </div>
         `;
         container.appendChild(card);
       });
 
-      document.querySelectorAll('.add-to-cart').forEach((button, index) => {
+      document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', () => {
+          const index = parseInt(button.dataset.index);
           const card = button.closest('.card-body');
           const size = card.querySelector('.size-select').value;
           const color = card.querySelector('.color-select').value;
