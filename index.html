@@ -34,7 +34,7 @@
 
   <!-- Корзина -->
   <div class="position-fixed bottom-0 end-0 m-4">
-    <button class="btn btn-success" onclick="checkout()">Оформить заказ</button>
+    <button class="btn btn-warning" onclick="checkout()">Корзина / Оплатить</button>
   </div>
 
   <!-- Модальное окно -->
@@ -56,7 +56,7 @@
       id: i + 1,
       title: `Футболка #${i + 1}`,
       image: i % 2 === 0 ? image1 : image2,
-      price: 1990
+      price: 7.5
     }));
 
     const cart = [];
@@ -71,7 +71,7 @@
             <img src="${product.image}" class="card-img-top product-img" alt="${product.title}" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="${product.image}">
             <div class="card-body">
               <h5 class="card-title">${product.title}</h5>
-              <p>Цена: ${product.price}₽</p>
+              <p>Цена: £${product.price.toFixed(2)}</p>
               <select class="form-select mb-2 size-select" data-index="${productIndex}">
                 <option disabled selected>Выбери размер</option>
                 <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
@@ -124,12 +124,13 @@
         return;
       }
 
-      const summary = cart.map(p => `${p.title} (${p.size}, ${p.color}) — ${p.price}₽`).join("\n");
-      const phone = "+447907340061";
-      const message = encodeURIComponent(`Здравствуйте! Я хочу заказать:\n${summary}`);
-      const waLink = `https://wa.me/${phone.replace('+', '')}?text=${message}`;
+      const summary = cart.map(p => `${p.title} (${p.size}, ${p.color}) — £${p.price.toFixed(2)}`).join("\n");
+      const delivery = "Royal Mail 1st Class Signed For — £3.99";
+      const phone = "@UKrussianNews";
+      const message = encodeURIComponent(`Здравствуйте! Я хочу заказать:\n${summary}\n${delivery}`);
+      const tgLink = `https://t.me/${phone}?start=${message}`;
 
-      window.open(waLink, '_blank');
+      window.open(tgLink, '_blank');
     }
 
     renderProducts();
