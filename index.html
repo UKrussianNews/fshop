@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Футболка, за которую не стыдно</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { padding-top: 70px; }
+    .product-card img { height: 200px; object-fit: cover; }
+    footer { background: #f8f9fa; padding: 20px; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
+    <div class="container">
+      <a class="navbar-brand" href="#">Футболка, за которую не стыдно</a>
+      <button class="btn btn-outline-success" onclick="openCart()">🛒 Корзина (<span id="cart-count">0</span>)</button>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row" id="products">
+      <!-- Футболки вставляются здесь -->
+    </div>
+
+    <hr>
+    <section id="info">
+      <h3>Описание</h3>
+      <p>Футболка из плотного хлопка с уникальным дизайном. Подходит для города, тусовки и даже на работу.</p>
+
+      <h3>Условия покупки и возврата</h3>
+      <ul>
+        <li>Доставка по всему СНГ и Великобритании</li>
+        <li>Возврат в течение 14 дней при наличии упаковки</li>
+        <li>Оплата по ссылке или QR-коду после подтверждения заказа</li>
+      </ul>
+
+      <h3>Контакты</h3>
+      <p>Email: info@tshirts-pride.ru | WhatsApp: +7 900 123 45 67</p>
+    </section>
+  </div>
+
+  <footer class="text-center">
+    <p>© 2025 Футболка, за которую не стыдно</p>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Корзина</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="cart-items"></div>
+        <div class="modal-footer">
+          <button class="btn btn-success" onclick="checkout()">Оплатить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      ...Array(15).keys()
+    ].map(i => ({
+      id: i + 1,
+      title: `Футболка #${i + 1}`,
+      image: `https://via.placeholder.com/300x200?text=Футболка+${i + 1}`,
+      price: 1990
+    }));
+
+    const cart = [];
+
+    function renderProducts() {
+      const container = document.getElementById("products");
+      products.forEach(p => {
+        container.innerHTML += `
+        <div class="col-md-4 mb-4">
+          <div class="card product-card">
+            <img src="${p.image}" class="card-img-top" alt="${p.title}">
+            <div class="card-body">
+              <h5 class="card-title">${p.title}</h5>
+              <p>Цена: ${p.price}₽</p>
+              <label>Размер: 
+                <select id="size-${p.id}" class="form-select form-select-sm">
+                  <option>S</option><option>L</option><option>XL</option><option>XXL</option>
+                </select>
+              </label>
+              <label class="mt-1">Цвет: 
+                <select id="color-${p.id}" class="form-select form-select-sm">
+                  <option>Чёрный</option><option>Белый</option>
+                </select>
+              </label>
+              <button class="btn btn-primary mt-2" onclick="addToCart(${p.id})">Добавить в корзину</button>
+            </div>
+          </div>
+        </div>`;
+      });
+    }
+
+    function addToCart(id) {
+      const size = document.getElementById(`size-${id}`).value;
+      const color = document.getElementById(`color-${id}`).value;
+      const product = products.find(p => p.id === id);
+      cart.push({ ...product, size, color });
+      document.getElementById("cart-count").innerText = cart.length;
+    }
+
+    function openCart() {
+      const list = cart.map(item => `<li>${item.title} - ${item.size}, ${item.color}, ${item.price}₽</li>`).join("");
+      document.getElementById("cart-items").innerHTML = `<ul>${list}</ul>`;
+      new bootstrap.Modal(document.getElementById('cartModal')).show();
+    }
+
+    function checkout() {
+      alert("После подтверждения заказа вам будет отправлена ссылка или QR для оплаты.");
+    }
+
+    renderProducts();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
