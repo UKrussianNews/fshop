@@ -126,7 +126,7 @@
 
       const summary = cart.map(p => `${p.title} (${p.size}, ${p.color}) — £${p.price.toFixed(2)}`).join("\n");
       const delivery = "Royal Mail 1st Class Signed For — £3.99";
-      const phone = "@UKrussianNews";
+      const phone = "UKrussianNews";
       const message = encodeURIComponent(`Здравствуйте! Я хочу заказать:\n${summary}\n${delivery}`);
       const tgLink = `https://t.me/${phone}?start=${message}`;
 
