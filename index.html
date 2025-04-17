@@ -53,27 +53,51 @@
             <div class="card-body">
               <h5 class="card-title">${product.title}</h5>
               <p>Цена: ${product.price}₽</p>
-              <select class="form-select mb-2">
+              <select class="form-select mb-2 size-select">
+                <option disabled selected>Выбери размер</option>
                 <option>S</option><option>L</option><option>XL</option><option>XXL</option>
               </select>
-              <select class="form-select mb-2">
+              <select class="form-select mb-2 color-select">
+                <option disabled selected>Выбери цвет</option>
                 <option>Чёрный</option><option>Белый</option>
               </select>
-              <button class="btn btn-primary w-100" onclick='addToCart(${JSON.stringify(product)})'>В корзину</button>
+              <button class="btn btn-primary w-100 add-to-cart">В корзину</button>
             </div>
           </div>
         `;
         container.appendChild(card);
       });
-    }
 
-    function addToCart(product) {
-      cart.push(product);
-      alert(`${product.title} добавлена в корзину!`);
+      document.querySelectorAll('.add-to-cart').forEach((button, index) => {
+        button.addEventListener('click', () => {
+          const card = button.closest('.card-body');
+          const size = card.querySelector('.size-select').value;
+          const color = card.querySelector('.color-select').value;
+
+          if (!size || size === 'Выбери размер') {
+            alert('Пожалуйста, выбери размер.');
+            return;
+          }
+
+          if (!color || color === 'Выбери цвет') {
+            alert('Пожалуйста, выбери цвет.');
+            return;
+          }
+
+          const product = products[index];
+          cart.push({ ...product, size, color });
+          alert(`${product.title} (${size}, ${color}) добавлена в корзину!`);
+        });
+      });
     }
 
     function checkout() {
-      const summary = cart.map(p => `${p.title} — ${p.price}₽`).join("\n");
+      if (cart.length === 0) {
+        alert("Ваша корзина пуста.");
+        return;
+      }
+
+      const summary = cart.map(p => `${p.title} (${p.size}, ${p.color}) — ${p.price}₽`).join("\n");
       alert(`Ваш заказ:\n${summary}\n\nОплата по ссылке: https://pay.example.com\nИли отсканируйте QR-код.`);
     }
 
